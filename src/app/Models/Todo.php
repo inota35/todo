@@ -11,12 +11,26 @@ class Todo extends Model
     use HasFactory;
 
     protected $fillable = [
-        'content',
-        'catagory_id',
+        'category_id', 'content'
         ];
 
         public function category()
         {
-            return $this->belongTo(Category::class);
+            return $this->belongsTo(Category::class);
+        }
+
+        public function scopeCategorySearch($query, $category_id)
+        {
+            if(!empty($category_id)){
+                $query->where('category_id',$category_id);
+            }
+        }
+
+        public function scopeKeywordSearch($query,$Keyword)
+        {
+            if(!empty($keyword)){
+                $query->where('content','like','%' . $keyword . '%');
+            }
+            return $query;
         }
 }
